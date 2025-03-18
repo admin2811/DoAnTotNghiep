@@ -1,0 +1,76 @@
+import requests
+import json
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import datetime
+import seaborn as sns
+import plotly.express as px
+import matplotlib.pyplot as plt
+
+plt.ion()
+
+url1 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2022-12-01&end_date=2022-12-31&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+url2 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2022-11-01&end_date=2022-11-30&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+url3 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2022-10-01&end_date=2022-10-31&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+url4 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2022-09-01&end_date=2022-09-30&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+url5 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2022-08-01&end_date=2022-08-31&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+url6 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2022-07-01&end_date=2022-07-31&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+url7 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2022-06-01&end_date=2022-06-30&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+url8 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2022-05-01&end_date=2022-05-31&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+url9 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2022-04-01&end_date=2022-04-30&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+url10 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2022-03-01&end_date=2022-03-31&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+url11 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2022-02-01&end_date=2022-02-28&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+url12 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2022-01-13&end_date=2022-01-31&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+
+#Parse JSON data
+data1 = requests.get(url1).json()
+data2 = requests.get(url2).json()
+data3 = requests.get(url3).json()
+data4 = requests.get(url4).json()
+data5 = requests.get(url5).json()
+data6 = requests.get(url6).json()
+data7 = requests.get(url7).json()
+data8 = requests.get(url8).json()
+data9 = requests.get(url9).json()
+data10 = requests.get(url10).json()
+data11 = requests.get(url11).json()
+data12 = requests.get(url12).json()
+
+# Joining the 'data' keys from variables
+joined_data = (
+    data1["data"]
+    + data2["data"]
+    + data3["data"]
+    + data4["data"]
+    + data5["data"]
+    + data6["data"]
+    + data7["data"]
+    + data8["data"]
+    + data9["data"]
+    + data10["data"]
+    + data11["data"]
+    + data12["data"]
+)
+
+# Creating a new dictionary with the joined data
+joined_results = {
+    "city_name": data1["city_name"],
+    "country_code": data1["country_code"],
+    "lat": data1["lat"],
+    "lon": data1["lon"],
+    "timezone": data1["timezone"],
+    "data": joined_data,
+}
+
+# Creating DataFrame
+df = pd.DataFrame(joined_results["data"])
+
+# Convert 'timestamp_local' to datetime
+df["timestamp_local"] = pd.to_datetime(df["timestamp_local"])
+df.set_index("timestamp_local", inplace=True)
+
+# Save to CSV
+df.to_csv("air_quality_hanoi_2022.csv", index=True, encoding="utf-8-sig")
+
+print(df.head())
