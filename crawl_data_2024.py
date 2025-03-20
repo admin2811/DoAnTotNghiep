@@ -7,17 +7,17 @@ import datetime
 import seaborn as sns
 import plotly.express as px
 
-url =  "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2024-11-15&end_date=2024-11-30&tz=local&key=0e205a5b616543e59f036d3c414373df"
-url2 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2024-10-31&end_date=2024-11-15&tz=local&key=0e205a5b616543e59f036d3c414373df"
-url3 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2024-10-15&end_date=2024-10-31&tz=local&key=0e205a5b616543e59f036d3c414373df"
-url4 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2024-09-30&end_date=2024-10-15&tz=local&key=0e205a5b616543e59f036d3c414373df"
-url5 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2024-09-15&end_date=2024-09-30&tz=local&key=0e205a5b616543e59f036d3c414373df"
-url6 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2024-08-31&end_date=2024-09-15&tz=local&key=0e205a5b616543e59f036d3c414373df"
-url7 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2024-08-15&end_date=2024-08-31&tz=local&key=0e205a5b616543e59f036d3c414373df"
-url8 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2024-07-31&end_date=2024-08-15&tz=local&key=0e205a5b616543e59f036d3c414373df"
-url9 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2024-07-15&end_date=2024-07-31&tz=local&key=0e205a5b616543e59f036d3c414373df"
-url10 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2024-06-30&end_date=2024-07-15&tz=local&key=0e205a5b616543e59f036d3c414373df"
-url11 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2024-06-14&end_date=2024-06-30&tz=local&key=0e205a5b616543e59f036d3c414373df"
+url =  "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2023-05-31&end_date=2023-06-15&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+url2 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2023-05-15&end_date=2023-05-31&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+url3 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2023-04-30&end_date=2023-05-15&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+url4 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2023-04-15&end_date=2023-04-30&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+url5 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2023-03-31&end_date=2023-04-15&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+url6 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2023-03-15&end_date=2023-03-31&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+url7 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2023-02-28&end_date=2023-03-15&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+url8 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2023-02-15&end_date=2023-02-28&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+url9 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2023-01-31&end_date=2023-02-15&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+url10 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2023-01-15&end_date=2023-01-31&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+url11 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2022-12-31&end_date=2023-01-15&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
 
 data = requests.get(url)
 results = json.loads(data.text)
@@ -67,17 +67,17 @@ df.set_index('Local Time', inplace=True)
 df.head()
 df.info()
 
-urlweath =  "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2024-11-15&end_date=2024-11-30&tz=local&key=0e205a5b616543e59f036d3c414373df"
-urlweath2 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2024-10-31&end_date=2024-11-15&tz=local&key=0e205a5b616543e59f036d3c414373df"
-urlweath3 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2024-10-15&end_date=2024-10-31&tz=local&key=0e205a5b616543e59f036d3c414373df"
-urlweath4 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2024-09-30&end_date=2024-10-15&tz=local&key=0e205a5b616543e59f036d3c414373df"
-urlweath5 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2024-09-15&end_date=2024-09-30&tz=local&key=0e205a5b616543e59f036d3c414373df"
-urlweath6 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2024-08-31&end_date=2024-09-15&tz=local&key=0e205a5b616543e59f036d3c414373df"
-urlweath7 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2024-08-15&end_date=2024-08-31&tz=local&key=0e205a5b616543e59f036d3c414373df"
-urlweath8 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2024-07-31&end_date=2024-08-15&tz=local&key=0e205a5b616543e59f036d3c414373df"
-urlweath9 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2024-07-15&end_date=2024-07-31&tz=local&key=0e205a5b616543e59f036d3c414373df"
-urlweath10 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2024-06-30&end_date=2024-07-15&tz=local&key=0e205a5b616543e59f036d3c414373df"
-urlweath11 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2024-06-14&end_date=2024-06-30&tz=local&key=0e205a5b616543e59f036d3c414373df"
+urlweath =  "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2023-05-31&end_date=2023-06-15&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+urlweath2 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2023-05-15&end_date=2023-05-31&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+urlweath3 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2023-04-30&end_date=2023-05-15&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+urlweath4 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2023-04-15&end_date=2023-04-30&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+urlweath5 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2023-03-31&end_date=2023-04-15&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+urlweath6 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2023-03-15&end_date=2023-03-31&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+urlweath7 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2023-02-28&end_date=2023-03-15&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+urlweath8 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2023-02-15&end_date=2023-02-28&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+urlweath9 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2023-01-31&end_date=2023-02-15&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+urlweath10 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2023-01-15&end_date=2023-01-31&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
+urlweath11 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2022-12-31&end_date=2023-01-15&tz=local&key=59db8247551b4dad8cdb799e349d7f32"
 data_w = requests.get(urlweath)
 results_w = json.loads(data_w.text)
 data_w2 = requests.get(urlweath2)
@@ -129,4 +129,4 @@ utc_time_column = merged_df.pop('UTC Time_x')
 merged_df.insert(0, 'UTC Time', utc_time_column)
 merged_df = merged_df.rename(columns={'City_x': 'City', 'Country code_x': 'Country Code', 'timezone_x':'Timezone'})
 merged_df
-merged_df.to_csv('hanoi-aqi-weather-data_2024_2.csv')
+merged_df.to_csv('hanoi-aqi-weather-data_2023_2.csv')
