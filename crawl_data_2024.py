@@ -129,4 +129,4 @@ utc_time_column = merged_df.pop('UTC Time_x')
 merged_df.insert(0, 'UTC Time', utc_time_column)
 merged_df = merged_df.rename(columns={'City_x': 'City', 'Country code_x': 'Country Code', 'timezone_x':'Timezone'})
 merged_df
-merged_df.to_csv('hanoi-aqi-weather-data_2024.csv')
+merged_df.to_csv('hanoi-aqi-weather-data_2024_2.csv')

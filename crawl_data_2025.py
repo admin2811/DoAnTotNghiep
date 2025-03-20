@@ -1,65 +1,132 @@
 import requests
 import json
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 import datetime
-import time  # Thêm thư viện time để delay
+import seaborn as sns
+import plotly.express as px
 
-# Thông tin API
-API_KEY = "59db8247551b4dad8cdb799e349d7f32"
-CITY = "Hanoi"
+url =  "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2025-11-15&end_date=2025-11-30&tz=local&key=0e205a5b616543e59f036d3c414373df"
+url2 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2025-10-31&end_date=2025-11-15&tz=local&key=0e205a5b616543e59f036d3c414373df"
+url3 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2025-10-15&end_date=2025-10-31&tz=local&key=0e205a5b616543e59f036d3c414373df"
+url4 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2025-09-30&end_date=2025-10-15&tz=local&key=0e205a5b616543e59f036d3c414373df"
+url5 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2025-09-15&end_date=2025-09-30&tz=local&key=0e205a5b616543e59f036d3c414373df"
+url6 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2025-08-31&end_date=2025-09-15&tz=local&key=0e205a5b616543e59f036d3c414373df"
+url7 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2025-08-15&end_date=2025-08-31&tz=local&key=0e205a5b616543e59f036d3c414373df"
+url8 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2025-07-31&end_date=2025-08-15&tz=local&key=0e205a5b616543e59f036d3c414373df"
+url9 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2025-07-15&end_date=2025-07-31&tz=local&key=0e205a5b616543e59f036d3c414373df"
+url10 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2025-01-15&end_date=2025-01-15&tz=local&key=0e205a5b616543e59f036d3c414373df"
+url11 = "https://api.weatherbit.io/v2.0/history/airquality?city=Hanoi&start_date=2024-12-31&end_date=2025-01-15&tz=local&key=0e205a5b616543e59f036d3c414373df"
 
-# Tạo danh sách các khoảng thời gian từ 13/01/2022 đến hiện tại
-start_date = datetime.date(2022, 1, 13)
-end_date = datetime.date.today()
-delta = datetime.timedelta(days=60)  # Lấy từng khoảng 2 tháng để giảm số request
+data = requests.get(url)
+results = json.loads(data.text)
+data2 = requests.get(url2)
+results2 = json.loads(data2.text)
+data3 = requests.get(url3)
+results3 = json.loads(data3.text)
+data4 = requests.get(url4)
+results4 = json.loads(data4.text)
+data5 = requests.get(url5)
+results5 = json.loads(data5.text)
+data6 = requests.get(url6)
+results6 = json.loads(data6.text)
+data7 = requests.get(url7)
+results7 = json.loads(data7.text)
+data8 = requests.get(url8)
+results8 = json.loads(data8.text)
+data9 = requests.get(url9)
+results9 = json.loads(data9.text)
+data10 = requests.get(url10)
+results10 = json.loads(data10.text)
+data11 = requests.get(url11)
+results11 = json.loads(data11.text)
+results['city_name']
+results['country_code']
+results['data'][0]
+results['data'][-1]
+joined_data = results['data'] + results2['data'] + results3['data'] + results4['data'] + results5['data'] + results6['data'] + results7['data'] + results8['data'] + results9['data'] + results10['data'] + results11['data']
+joined_results = {
+    'city_name': results['city_name'],
+    'country_code': results['country_code'],
+    'lat': results['lat'],
+    'lon': results['lon'],
+    'timezone': results['timezone'],
+    'data': joined_data
+}
+joined_results['data'][0]
+joined_results['data'][-1]
+df = pd.DataFrame(joined_results)
+df.columns = ['City', 'Country code', 'Lat', 'Lon', 'timezone', 'Data']
+df[['AQI', 'CO', 'Date Time', 'NO2', 'O3', 'PM10', 'PM25', 'SO2', 'Local Time', 'UTC Time', 'TS']] = pd.DataFrame(df['Data'].tolist())
+df.drop(columns=['Data', 'Lat', 'Lon', 'TS', 'Date Time'], inplace=True)
+df = df.drop_duplicates()
+df = df.sort_values(by='Local Time')
+df['Local Time'] = pd.to_datetime(df['Local Time'])
+df.set_index('Local Time', inplace=True)
+df.head()
+df.info()
 
-date_ranges = []
-while start_date < end_date:
-    next_date = start_date + delta
-    if next_date > end_date:
-        next_date = end_date
-    date_ranges.append((start_date, next_date))
-    start_date = next_date
-
-# Hàm lấy dữ liệu từ API
-def fetch_air_quality(start, end):
-    url = f"https://api.weatherbit.io/v2.0/history/airquality?city={CITY}&start_date={start}&end_date={end}&tz=local&key={API_KEY}"
-    try:
-        response = requests.get(url)
-        if response.status_code == 429:
-            print(f"Lỗi 429: Quá nhiều request. Đợi 30 giây trước khi thử lại...")
-            time.sleep(30)  # Chờ 30 giây rồi thử lại
-            return fetch_air_quality(start, end)
-        response.raise_for_status()  # Kiểm tra lỗi HTTP khác
-        data = response.json()
-        return data.get("data", [])
-    except requests.exceptions.RequestException as e:
-        print(f"Lỗi khi lấy dữ liệu từ {start} đến {end}: {e}")
-        return []
-
-# Lấy dữ liệu từ API với delay giữa các request
-all_data = []
-for start, end in date_ranges:
-    print(f"Đang lấy dữ liệu từ {start} đến {end}...")
-    all_data.extend(fetch_air_quality(start, end))
-    time.sleep(2)  # Chờ 2 giây giữa các request để tránh lỗi 429
-
-# Tạo DataFrame từ dữ liệu thu thập được
-if all_data:
-    df = pd.DataFrame(all_data)
-
-    # Chuyển đổi thời gian
-    df["timestamp_local"] = pd.to_datetime(df["timestamp_local"])
-
-    # Sắp xếp dữ liệu theo thời gian
-    df = df.sort_values(by="timestamp_local").reset_index(drop=True)
-
-    # Hiển thị thông tin DataFrame
-    print(df.info())
-    print(df.head()) 
-
-    # Lưu vào file CSV
-    #df.to_csv("air_quality_hanoi_2022_2024.csv", index=False)
-    print("Dữ liệu đã được lưu vào air_quality_hanoi_2022_2024.csv")
-else:
-    print("Không có dữ liệu nào được lấy.")
+urlweath =  "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2025-11-15&end_date=2025-11-30&tz=local&key=0e205a5b616543e59f036d3c414373df"
+urlweath2 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2025-10-31&end_date=2025-11-15&tz=local&key=0e205a5b616543e59f036d3c414373df"
+urlweath3 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2025-10-15&end_date=2025-10-31&tz=local&key=0e205a5b616543e59f036d3c414373df"
+urlweath4 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2025-09-30&end_date=2025-10-15&tz=local&key=0e205a5b616543e59f036d3c414373df"
+urlweath5 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2025-09-15&end_date=2025-09-30&tz=local&key=0e205a5b616543e59f036d3c414373df"
+urlweath6 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2025-08-31&end_date=2025-09-15&tz=local&key=0e205a5b616543e59f036d3c414373df"
+urlweath7 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2025-08-15&end_date=2025-08-31&tz=local&key=0e205a5b616543e59f036d3c414373df"
+urlweath8 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2025-07-31&end_date=2025-08-15&tz=local&key=0e205a5b616543e59f036d3c414373df"
+urlweath9 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2025-07-15&end_date=2025-07-31&tz=local&key=0e205a5b616543e59f036d3c414373df"
+urlweath10 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2025-06-30&end_date=2025-07-15&tz=local&key=0e205a5b616543e59f036d3c414373df"
+urlweath11 = "https://api.weatherbit.io/v2.0/history/hourly?city=Hanoi&start_date=2025-06-14&end_date=2025-06-30&tz=local&key=0e205a5b616543e59f036d3c414373df"
+data_w = requests.get(urlweath)
+results_w = json.loads(data_w.text)
+data_w2 = requests.get(urlweath2)
+results_w2 = json.loads(data_w2.text)
+data_w3 = requests.get(urlweath3)
+results_w3 = json.loads(data_w3.text)
+data_w4 = requests.get(urlweath4)
+results_w4 = json.loads(data_w4.text)
+data_w5 = requests.get(urlweath5)
+results_w5 = json.loads(data_w5.text)
+data_w6 = requests.get(urlweath6)
+results_w6 = json.loads(data_w6.text)
+data_w7 = requests.get(urlweath7)
+results_w7 = json.loads(data_w7.text)
+data_w8 = requests.get(urlweath8)
+results_w8 = json.loads(data_w8.text)
+data_w9 = requests.get(urlweath9)
+results_w9 = json.loads(data_w9.text)
+data_w10 = requests.get(urlweath10)
+results_w10 = json.loads(data_w10.text)
+data_w11 = requests.get(urlweath11)
+results_w11 = json.loads(data_w11.text)
+joined_data_weather = results_w['data'] + results_w2['data'] + results_w3['data'] + results_w4['data'] + results_w5['data'] + results_w6['data'] + results_w7['data'] + results_w8['data'] + results_w9['data'] + results_w10['data'] + results_w11['data'] 
+joined_results_weather = {
+    'city_name': results_w['city_name'],
+    'country_code': results_w['country_code'],
+    'lat': results_w['lat'],
+    'lon': results_w['lon'],
+    'timezone': results_w['timezone'],
+    'data': joined_data_weather
+}
+df_weather = pd.DataFrame(joined_results_weather)
+df_weather.columns = ['City', 'Country code', 'Lat', 'Lon', 'timezone', 'Data']
+df_weather[['Apparent Temperature', 'Azimuth', 'Clouds', 'Datetime', 'Dew Point', 'DHI', 'DNI', 'Elevation Angle', 'GHI',
+            'H Angle', 'Pod', 'Precipitation', 'Pressure', 'Status', 'Relative Humidity', 'Sea Level Pressure', 'Snow',
+            'Solar Radiation', 'Temperature', 'Local Time', 'UTC Time', 'Timestamp', 'UV Index', 'Visibility', 'Weather',
+            'Wind Direction', 'Wind Gust Speed', 'Wind Speed']] = pd.DataFrame(df_weather['Data'].tolist())
+df_weather.drop(columns=['Data', 'Lat', 'Lon', 'Apparent Temperature', 'Azimuth','Datetime', 'Dew Point', 'DHI', 'DNI',
+                         'Elevation Angle', 'GHI', 'H Angle', 'Pod', 'Status', 'Sea Level Pressure', 'Snow',
+                         'Solar Radiation', 'Timestamp', 'Visibility', 'Wind Direction', 'Wind Gust Speed', 'Weather'], inplace=True)
+df_weather = df_weather.drop_duplicates()
+df_weather = df_weather.sort_values(by='Local Time')
+df_weather['Local Time'] = pd.to_datetime(df_weather['Local Time'])
+df_weather.set_index('Local Time', inplace=True)
+df_weather = df_weather[:-23]
+merged_df = pd.merge(df, df_weather, left_index=True, right_index=True)
+merged_df.drop(columns=['City_y', 'Country code_y', 'timezone_y', 'UTC Time_y'], inplace=True)
+utc_time_column = merged_df.pop('UTC Time_x')
+merged_df.insert(0, 'UTC Time', utc_time_column)
+merged_df = merged_df.rename(columns={'City_x': 'City', 'Country code_x': 'Country Code', 'timezone_x':'Timezone'})
+merged_df
+merged_df.to_csv('hanoi-aqi-weather-data_2025_2.csv')

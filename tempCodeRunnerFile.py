@@ -1,2 +1,8 @@
-
-merged_df = merged_df.rename(columns={'City_x': 'City', 'Country code_x': 'Country Code', 'timezone_x':'Timezone'})
+import requests
+import json
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import datetime
+import seaborn as sns
+import plotly.express as px
