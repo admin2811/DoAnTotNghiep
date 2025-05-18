@@ -42,7 +42,7 @@ training:
   data_term_lambda_3d: 0.0
   lr_d: 0.00001
   lr_g: 0.0025
-  n_epochs: 10000
+  n_epochs: 5000
   optimizer_d: adam
   optimizer_g: adam
   resume: False
